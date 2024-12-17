@@ -13,7 +13,21 @@
             SYSTEM)
     FetchContent_MakeAvailable(SFML)
 
-    add_executable(Breakout src/main.cpp)
+    add_executable(Breakout src/main.cpp
+            src/Game.cpp
+            src/Game.h
+            src/Window.cpp
+            src/Window.h
+            src/Level.cpp
+            src/Level.h
+            src/GameMap.cpp
+            src/GameMap.h
+            src/Paddle.cpp
+            src/Paddle.h
+            src/Ball.cpp
+            src/Ball.h
+            src/Brick.cpp
+            src/Brick.h)
 
     target_link_libraries(Breakout PRIVATE sfml-graphics)
     target_compile_features(Breakout PRIVATE cxx_std_17)
