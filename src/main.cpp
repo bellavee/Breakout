@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 
+#include "Brick.h"
+
 int main() {
     // create the window
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "My window");
+    sf::RenderWindow window(sf::VideoMode({1280, 720}), "My window");
 
     // run the program as long as the window is open
     while (window.isOpen()) {
@@ -16,9 +18,9 @@ int main() {
         // clear the window with black color
         window.clear(sf::Color::White);
 
-        // draw everything here...
-        // window.draw(...);
+        Brick* brick = new Brick({ 100.f, 20.f });
 
+        window.draw(brick->CreateSprite());
         // end the current frame
         window.display();
     }
