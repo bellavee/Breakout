@@ -1,20 +1,44 @@
 
 #ifndef BRICK_H
 #define BRICK_H
+#include "../include/Constants.h"
+#include "SFML/Graphics/Texture.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 #include "SFML/System/Vector2.hpp"
 
+enum BrickState {
+    Destroy,
+    Level1,
+    Level2,
+    Level3,
+    Level4,
+};
 
 class Brick {
 public:
-    Brick();
+    Brick(sf::Vector2f pos);
     ~Brick();
 
+    void LoadImage(const std::string& filename);
+    sf::Sprite CreateSprite();
+    int GetTextureScaleSizeX() const { return _texture.getSize().x * GameConstants::SCALE_SIZE; }
+    int GetTextureScaleSizeY() const { return _texture.getSize().y * GameConstants::SCALE_SIZE; }
+
+    void Draw();
+    void Update();
     void CheckCollision();
+    void OnCollision(sf::Vector2f dir);
+    void OnStateChange();
+    void SetState(BrickState state);
+
 
 private:
     sf::Vector2f _position;
-    int hitPoints;
+    int _hitPoints;
+    BrickState _state;
+    bool _isDestroy = false;
 
+    sf::Texture _texture;
 };
 
 
