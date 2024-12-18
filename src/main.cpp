@@ -1,10 +1,14 @@
 #include <SFML/Graphics.hpp>
 
 #include "Brick.h"
+#include "GameMap.h"
 
 int main() {
     // create the window
     sf::RenderWindow window(sf::VideoMode({1280, 720}), "My window");
+
+    GameMap* map = new GameMap(window);
+    map->LoadMap("../levels/1.txt");
 
     // run the program as long as the window is open
     while (window.isOpen()) {
@@ -18,9 +22,9 @@ int main() {
         // clear the window with black color
         window.clear(sf::Color::White);
 
-        Brick* brick = new Brick({ 100.f, 20.f });
 
-        window.draw(brick->CreateSprite());
+        map->Draw();
+
         // end the current frame
         window.display();
     }

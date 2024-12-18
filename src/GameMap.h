@@ -6,16 +6,26 @@
 #include "Brick.h"
 
 
+namespace sf {
+    class RenderWindow;
+}
+
 class GameMap {
 public:
-    GameMap();
+    GameMap(sf::RenderWindow &window);
     ~GameMap();
 
+    void LoadMap(const std::string& filename);
     void Draw();
     void RemoveBrick(Brick* brick);
+    bool IsComplete() const { return _bricks.empty(); }
+
 
 private:
     std::vector<Brick*> _bricks;
+    sf::RenderWindow& _window;
+
+    void Clear();
 
 };
 

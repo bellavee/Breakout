@@ -12,8 +12,12 @@ Brick::~Brick() {
 
 }
 
+void Brick::LoadImage(std::filesystem::path filePath) {
+    _texture.loadFromFile(filePath);
+}
+
+
 sf::Sprite Brick::CreateSprite() {
-    _texture.loadFromFile("../assets/brick-pink.png");
     sf::Sprite sprite(_texture);
     sprite.setPosition(_position);
     sprite.setScale(sf::Vector2f(3, 3));
@@ -21,7 +25,6 @@ sf::Sprite Brick::CreateSprite() {
 }
 
 void Brick::Draw() {
-
 }
 
 void Brick::Update() {
@@ -34,4 +37,10 @@ void Brick::OnCollision(sf::Vector2f dir) {
 }
 
 void Brick::OnStateChange() {
+}
+
+void Brick::SetState(BrickState state) {
+    _state = state;
+    _hitPoints = static_cast<int>(state);
+    OnStateChange();
 }

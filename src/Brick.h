@@ -18,13 +18,15 @@ public:
     Brick(sf::Vector2f pos);
     ~Brick();
 
+    auto LoadImage(std::filesystem::path filePath) -> void;
     sf::Sprite CreateSprite();
+
     void Draw();
     void Update();
     void CheckCollision();
     void OnCollision(sf::Vector2f dir);
     void OnStateChange();
-
+    void SetState(BrickState state);
 
 private:
     sf::Vector2f _position;
