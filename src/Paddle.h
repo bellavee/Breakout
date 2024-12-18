@@ -3,6 +3,7 @@
 #define PADDLE_H
 #include <string>
 
+#include "../include/Constants.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
@@ -12,23 +13,23 @@
 class Paddle {
 public:
     Paddle(sf::RenderWindow& window);
-    ~Paddle();
+    ~Paddle() = default;
 
     void LoadImage(const std::string& filename);
     void Update();
     void Draw();
-    void HandleKeyboardInput();
-    void HandleMouseInput();
+    sf::Sprite CreateSprite();
+    int GetTextureScaleSizeX() const { return _texture.getSize().x * GameConstants::SCALE_SIZE; }
+    int GetTextureScaleSizeY() const { return _texture.getSize().y * GameConstants::SCALE_SIZE; }
 
 private:
+    void HandleMouseInput();
+
     sf::RenderWindow& _window;
     sf::Texture _texture;
 
-    float _speed;
     sf::Vector2f _position;
-
     float _windowWidth;
-    const float PADDLE_SPEED = 800.0f;
 
 };
 

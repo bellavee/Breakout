@@ -9,11 +9,11 @@ public:
     Level();
     ~Level();
 
-    void Initialize(GameMap* map);
+    void Initialize(std::unique_ptr<GameMap> map);
     void CheckGameState();
 
 private:
-    GameMap* _map;
+    std::unique_ptr<GameMap> _map;
 
 };
 

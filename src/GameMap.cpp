@@ -9,12 +9,10 @@ GameMap::GameMap(sf::RenderWindow& window) : _window(window) {
 }
 
 GameMap::~GameMap() {
-    Clear();
+    _bricks.clear();
 }
 
 void GameMap::LoadMap(const std::string& filename) {
-    Clear();
-
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Unable to open level file: " + filename);
@@ -23,17 +21,20 @@ void GameMap::LoadMap(const std::string& filename) {
     int mapWidth, mapHeight;
     file >> mapWidth >> mapHeight;
 
-    float BRICK_WIDTH = 48 * 3;
-    float BRICK_HEIGHT = 16 * 3;
+    std::shared_ptr<Brick> tmpBrick = std::make_shared<Brick>(sf::Vector2f(0, 0));
+    tmpBrick->LoadImage("../assets/brick-1.png");
+
+    float BRICK_WIDTH = tmpBrick->GetTextureScaleSizeX();
+    float BRICK_HEIGHT = tmpBrick->GetTextureScaleSizeY();
 
     float totalMapWidth = mapWidth * BRICK_WIDTH + (mapWidth - 1);
     float totalMapHeight = mapHeight * BRICK_HEIGHT + (mapHeight - 1);
     float startX = (_window.getSize().x - totalMapWidth) / 2.0f;
-    float startY = (_window.getSize().y - totalMapHeight) / 5.0f;
+    float startY = (_window.getSize().y - totalMapHeight) / 10.0f;
 
     for (int row = 0; row < mapHeight; row++) {
         std::string line;
-        if (row == 0) std::getline(file >> std::ws, line);  // Skip first line
+        if (row == 0) std::getline(file >> std::ws, line);
         std::getline(file, line);
 
         for (int col = 0; col < mapWidth; col++) {
@@ -43,7 +44,7 @@ void GameMap::LoadMap(const std::string& filename) {
                     float x = startX + col * BRICK_WIDTH;
                     float y = startY + row * BRICK_HEIGHT;
 
-                    Brick* brick = new Brick(sf::Vector2f(x, y));
+                    std::shared_ptr brick = std::make_unique<Brick>(sf::Vector2f(x, y));
                     brick->SetState(static_cast<BrickState>(brickType));
                     brick->LoadImage("../assets/brick-" + std::to_string(brickType) + ".png");
 
@@ -56,15 +57,11 @@ void GameMap::LoadMap(const std::string& filename) {
 }
 
 void GameMap::Draw() {
-    for (Brick* brick : _bricks) {
+    for (const std::shared_ptr brick : _bricks) {
         _window.draw(brick->CreateSprite());
     }
 }
 
-void GameMap::RemoveBrick(Brick* brick) {
-}
+void GameMap::RemoveBrick(std::shared_ptr<Brick> brick) {
 
-void GameMap::Clear() {
-    for (auto brick : _bricks) delete brick;
-    _bricks.clear();
 }

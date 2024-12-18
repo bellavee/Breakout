@@ -4,19 +4,17 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 
-Brick::Brick(sf::Vector2f pos)
-    : _position(pos)
-{
+Brick::Brick(sf::Vector2f pos) : _position(pos) {
 }
 
 Brick::~Brick() {
 
 }
 
-void Brick::LoadImage(std::filesystem::path filePath) {
-    bool success = _texture.loadFromFile(filePath);
+void Brick::LoadImage(const std::string& filename) {
+    bool success = _texture.loadFromFile(filename);
     if (!success) {
-        throw std::runtime_error("Failed to load texture: " + filePath.string());
+        throw std::runtime_error("Failed to load texture: " + filename);
     }
 }
 

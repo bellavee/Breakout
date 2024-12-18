@@ -27,7 +27,8 @@
             src/Ball.cpp
             src/Ball.h
             src/Brick.cpp
-            src/Brick.h)
+            src/Brick.h
+            include/Constants.h)
 
     target_link_libraries(Breakout PRIVATE sfml-graphics)
     target_compile_features(Breakout PRIVATE cxx_std_17)

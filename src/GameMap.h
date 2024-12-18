@@ -17,12 +17,12 @@ public:
 
     void LoadMap(const std::string& filename);
     void Draw();
-    void RemoveBrick(Brick* brick);
+    void RemoveBrick(std::shared_ptr<Brick> brick);
     bool IsComplete() const { return _bricks.empty(); }
 
 
 private:
-    std::vector<Brick*> _bricks;
+    std::vector<std::shared_ptr<Brick>> _bricks;
     sf::RenderWindow& _window;
 
     void Clear();
