@@ -74,6 +74,6 @@ void GameMap::Update(int &currentScore)
 
 void GameMap::Draw(GameWindow& window) 
 {
-    for (const std::shared_ptr<Brick>& brick : _bricks) {
+    for (const std::shared_ptr<Brick>& brick : _bricks)
         brick->Draw(window);
 }
