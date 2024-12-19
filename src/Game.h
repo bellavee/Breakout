@@ -29,6 +29,7 @@ private:
     int _currentScore;
     sf::Font _font;
     sf::Text _scoreText;
+    sf::Text _levelText;
     std::unique_ptr<Paddle> _paddle;
     std::unique_ptr<Ball> _ball;
     std::unique_ptr<GameWindow> _gameWindow;

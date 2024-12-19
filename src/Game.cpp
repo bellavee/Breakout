@@ -6,11 +6,12 @@ Game::Game(int width, int height, const std::string& title)
     , _scoreText(_font)
     , _bonusClock()
     , _malusClock()
+    , _levelText(_font)
     , _gameWindow(std::make_unique<GameWindow>(width, height, title))
     , _bgTexture()
     , _bgSprite(_bgTexture)
     , _paddle(std::make_unique<Paddle>("../assets/paddle.png", width, height))
-    , _ball(std::make_unique<Ball>("../assets/ball.png", width, height, 2.0f, sf::Vector2f{(float) width / 2, (float) height / 2}, sf::Vector2f{2.0f, -2.0f}))
+    , _ball(std::make_unique<Ball>("../assets/ball.png", width, height, 2.0f, sf::Vector2f{(float)width / 2, (float)height - 100.0f}, sf::Vector2f{2.5f, -2.5f}))
 {
     if (!_bgTexture.loadFromFile("../assets/bg.png")) {
         std::cerr << "Failed to load background texture!" << std::endl;
@@ -29,6 +30,10 @@ Game::Game(int width, int height, const std::string& title)
     _scoreText.setFont(_font);
     _scoreText.setPosition({width - 200.0f, 10.0f});
     _scoreText.setFillColor(sf::Color::Black);
+
+    _levelText.setFont(_font);
+    _levelText.setPosition({10.0f, 10.0f});
+    _levelText.setFillColor(sf::Color::Black);
 }
 
 void Game::Init()
@@ -37,6 +42,7 @@ void Game::Init()
     _currentLevel = 0;
     _currentScore = 0;
     _scoreText.setString("Score: " + std::to_string(_currentScore));
+    _levelText.setString("Score: " + std::to_string(_currentLevel + 1));
 
     if (!_bgm.openFromFile("../assets/bgm.mp3")) {
         std::cerr << "Failed to load background music!" << std::endl;
@@ -61,8 +67,9 @@ void Game::Run()
         _allLevel[_currentLevel]->Update(*_gameWindow, _currentScore);
 
         _paddle->Update(*_gameWindow);
-        _ball->Update();
+        _ball->Update(*_paddle);
         _scoreText.setString("Score: " + std::to_string(_currentScore));
+        _levelText.setString("Level: " + std::to_string(_currentLevel + 1));
         _ball->CheckCollisions(*_paddle, _allLevel[_currentLevel]->GetMap()->GetBricks());
 
         _gameWindow->Clear(sf::Color::White);
@@ -72,6 +79,7 @@ void Game::Run()
         _paddle->Draw(*_gameWindow);
         _ball->Draw(*_gameWindow);
         _gameWindow->Draw(_scoreText);
+        _gameWindow->Draw(_levelText);
 
         _gameWindow->Display();
     }
@@ -79,8 +87,10 @@ void Game::Run()
 
 void Game::LaunchNextLevel()
 {
-    if (_currentLevel + 1 < _allLevel.size())
+    if (_currentLevel + 1 < _allLevel.size()) {
         _currentLevel++;
+    }
+
     else
         Win();
 }
