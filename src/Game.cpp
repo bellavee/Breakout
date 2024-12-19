@@ -4,11 +4,12 @@
 Game::Game(int width, int height, const std::string& title) 
     : _font()
     , _scoreText(_font)
+    , _gameClock()
     , _gameWindow(std::make_unique<GameWindow>(width, height, title))
-      , _bgTexture()
-      , _bgSprite(_bgTexture)
-      , _paddle(std::make_unique<Paddle>("../assets/paddle.png", width, height))
-      , _ball(std::make_unique<Ball>("../assets/ball.png", width, height, 2.0f, sf::Vector2f{(float) width / 2, (float) height / 2}, sf::Vector2f{2.0f, -2.0f}))
+    , _bgTexture()
+    , _bgSprite(_bgTexture)
+    , _paddle(std::make_unique<Paddle>("../assets/paddle.png", width, height))
+    , _ball(std::make_unique<Ball>("../assets/ball.png", width, height, 2.0f, sf::Vector2f{(float) width / 2, (float) height / 2}, sf::Vector2f{2.0f, -2.0f}))
 {
     if (!_bgTexture.loadFromFile("../assets/bg.png")) {
         std::cerr << "Failed to load background texture!" << std::endl;
@@ -31,6 +32,7 @@ Game::Game(int width, int height, const std::string& title)
 
 void Game::Init()
 {
+    srand(time(0));
     _currentLevel = 0;
     _currentScore = 0;
     _scoreText.setString("Score: " + std::to_string(_currentScore));
@@ -40,8 +42,11 @@ void Game::Init()
         return;
     }
     _bgm.setLooping(true);
-    _bgm.setVolume(20.0f);
+    _bgm.setVolume(10.0f);
     _bgm.play();
+
+    InitBonuses();
+    InitMaluses();
 }
 
 void Game::Run()
@@ -91,5 +96,32 @@ void Game::Update()
 {
     if (_allLevel[_currentLevel]->GetLevelStatus() == LevelStatus::Ended)
         LaunchNextLevel();
+
+    // launch new bonus
+    if (_gameClock.getElapsedTime().asSeconds() >= 30.0f) {
+        _gameClock.restart();
+        int max = _bonuses.size();
+        int i =  rand() % max;
+        _bonuses[i]->Apply();
+    }
+
+    for (const auto & bonus : _bonuses)
+        bonus->Update();
+    for (const auto & malus : _maluses)
+        malus->Update();
 }
 
+void Game::InitBonuses()
+{
+    auto paddleExpandEffect = [](Paddle& p) { p.IncreaseSize(2.5, 1.5); };
+    auto paddleExpandResetEffect = [](Paddle& p) { p.DecreaseSize(2.5, 1.5); };
+    auto ballExpandEffect = [](Ball& b) { b.IncreaseRadius(30.0); };
+    auto ballExpandResetEffect = [](Ball& b) { b.IncreaseRadius(-30.0); };
+
+    _bonuses.push_back(std::make_unique<GameEffect<Paddle>>("Expanding Paddle", paddleExpandEffect, paddleExpandResetEffect, *_paddle, 15.0f));
+    _bonuses.push_back(std::make_unique<GameEffect<Ball>>("Fireball", ballExpandEffect, ballExpandResetEffect, *_ball, 15.0f));
+}
+
+void Game::InitMaluses()
+{
+}

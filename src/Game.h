@@ -6,6 +6,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "GameWindow.h"
+#include "GameEffect.h"
 
 class Game {
 public:
@@ -20,6 +21,8 @@ private:
     void Win();
     void Lose();
     void Update();
+    void InitBonuses();
+    void InitMaluses();
 
 private:
     int _currentLevel;
@@ -30,10 +33,13 @@ private:
     std::unique_ptr<Ball> _ball;
     std::unique_ptr<GameWindow> _gameWindow;
     std::vector<std::unique_ptr<GameLevel>> _allLevel;
+    std::vector<std::unique_ptr<IGameEffect>> _bonuses;
+    std::vector<std::unique_ptr<IGameEffect>> _maluses;
 
     sf::Music _bgm;
     sf::Texture _bgTexture;
     sf::Sprite _bgSprite;
+    sf::Clock _gameClock;
 };
 
 

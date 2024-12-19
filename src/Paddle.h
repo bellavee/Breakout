@@ -18,6 +18,8 @@ public:
     int GetTextureScaleSizeX() const { return _texture.getSize().x * GameConstants::SCALE_SIZE; }
     int GetTextureScaleSizeY() const { return _texture.getSize().y * GameConstants::SCALE_SIZE; }
     sf::Sprite& GetSprite() { return _sprite; }
+    void IncreaseSize(float sizeX, float sizeY);
+    void DecreaseSize(float sizeX, float sizeY);
 
 private:
     void HandleMouseInput(GameWindow &window);

@@ -30,7 +30,18 @@ void Paddle::Draw(GameWindow &window) {
     window.Draw(_sprite);
 }
 
-void Paddle::HandleMouseInput(GameWindow &window) {
+void Paddle::IncreaseSize(float sizeX, float sizeY)
+{
+    _sprite.setScale( _sprite.getScale() + sf::Vector2f{sizeX, sizeY});
+}
+
+void Paddle::DecreaseSize(float sizeX, float sizeY)
+{
+    _sprite.setScale(_sprite.getScale() - sf::Vector2f{sizeX, sizeY});
+}
+
+void Paddle::HandleMouseInput(GameWindow &window)
+{
     sf::Vector2i mousePos = sf::Mouse::getPosition(window.GetGameWindow());
 
     if (mousePos.x >= 0 && mousePos.x <= _windowWidth) {

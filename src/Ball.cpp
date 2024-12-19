@@ -30,15 +30,20 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
     _ballOutline.setFillColor(sf::Color::Transparent);
     _ballOutline.setOutlineThickness(2.0f);
     _ballOutline.setOutlineColor(sf::Color::Red);
-    //_ballOutline.setOrigin({_radius, _radius});
-    _ballOutline.setPosition({ bounds.position.x + bounds.size.x / 2.0f, bounds.position.y + bounds.size.y / 2.0f });
+    //
+   // _ballOutline.setPosition({ bounds.position.x + bounds.size.x / 2.0f, bounds.position.y + bounds.size.y / 2.0f });
+    // _ballOutline.setPosition(_position);
+    // _ballOutline.setOrigin({_radius, _radius});
+    IncreaseRadius(0);
 }
 
 void Ball::Update()
 {
     _sprite.move(_velocity * _speed);
     CheckWallCollisions();
-    _ballOutline.setPosition(_sprite.getPosition());
+    //_ballOutline.setPosition(_sprite.getPosition());
+    sf::FloatRect spriteBounds = _sprite.getGlobalBounds();
+    _ballOutline.setPosition({spriteBounds.position.x + spriteBounds.size.x / 2, spriteBounds.position.y + spriteBounds.size.y / 2});
 }
 
 void Ball::Draw(GameWindow &window)
@@ -46,6 +51,18 @@ void Ball::Draw(GameWindow &window)
     window.Draw(_sprite);
     window.Draw(_ballOutline);
 }
+
+void Ball::IncreaseRadius(float radius)
+{ 
+    _radius += radius; 
+    _ballOutline.setRadius(_radius); 
+    _ballOutline.setRadius(_radius);
+        
+    sf::FloatRect spriteBounds = _sprite.getGlobalBounds();
+    _ballOutline.setOrigin({_radius, _radius});
+    _ballOutline.setPosition({spriteBounds.position.x + spriteBounds.size.x / 2, spriteBounds.position.y + spriteBounds.size.y / 2}); 
+}
+
 
 void Ball::CheckWallCollisions()
 {

@@ -29,6 +29,8 @@
             src/Ball.h
             src/Brick.cpp
             src/Brick.h
+            src/IGameEffect.h
+            src/GameEffect.h
             include/Constants.h)
 
     target_link_libraries(Breakout PRIVATE
