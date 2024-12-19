@@ -1,35 +1,34 @@
 
 #ifndef PADDLE_H
 #define PADDLE_H
-#include <string>
 
+#include "Breakout.h"
+#include "GameWindow.h"
 #include "../include/Constants.h"
-#include "SFML/Graphics/RenderWindow.hpp"
-#include "SFML/Graphics/Sprite.hpp"
-#include "SFML/Graphics/Texture.hpp"
-#include "SFML/System/Vector2.hpp"
+
 
 
 class Paddle {
 public:
-    Paddle(sf::RenderWindow& window);
+    Paddle(int windowWidth, int windowHeight);
     ~Paddle() = default;
 
     void LoadImage(const std::string& filename);
-    void Update();
-    void Draw();
+    void Update(GameWindow &window);
+    void Draw(GameWindow &window);
     sf::Sprite CreateSprite();
     int GetTextureScaleSizeX() const { return _texture.getSize().x * GameConstants::SCALE_SIZE; }
     int GetTextureScaleSizeY() const { return _texture.getSize().y * GameConstants::SCALE_SIZE; }
 
 private:
-    void HandleMouseInput();
+    void HandleMouseInput(GameWindow &window);
 
-    sf::RenderWindow& _window;
+   // sf::RenderWindow& _window;
     sf::Texture _texture;
 
     sf::Vector2f _position;
     float _windowWidth;
+    float _windowHeight;
 
 };
 

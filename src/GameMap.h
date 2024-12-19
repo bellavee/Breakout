@@ -1,30 +1,25 @@
 
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
-#include <vector>
-
+#include "Breakout.h"
 #include "Brick.h"
-
-
-namespace sf {
-    class RenderWindow;
-}
+#include "GameWindow.h"
 
 class GameMap {
 public:
-    GameMap(sf::RenderWindow &window);
+    GameMap(int windowWidth, int windowHeight);
     ~GameMap();
 
     void LoadMap(const std::string& filename);
-    void Draw();
+    void Draw(GameWindow &window);
     void RemoveBrick(std::shared_ptr<Brick> brick);
     bool IsComplete() const { return _bricks.empty(); }
 
 
 private:
     std::vector<std::shared_ptr<Brick>> _bricks;
-    sf::RenderWindow& _window;
-
+    int _windowWidth;
+    int _windowHeight;
     void Clear();
 
 };

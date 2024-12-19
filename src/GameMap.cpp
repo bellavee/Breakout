@@ -1,14 +1,15 @@
 
 #include "GameMap.h"
 
-#include <fstream>
 
-#include "SFML/Graphics/RenderWindow.hpp"
-
-GameMap::GameMap(sf::RenderWindow& window) : _window(window) {
+GameMap::GameMap(int windowWidth, int windowHeight)
+    : _windowHeight(windowHeight)
+    , _windowWidth(windowWidth)
+{
 }
 
-GameMap::~GameMap() {
+GameMap::~GameMap()
+{
     _bricks.clear();
 }
 
@@ -29,8 +30,8 @@ void GameMap::LoadMap(const std::string& filename) {
 
     float totalMapWidth = mapWidth * BRICK_WIDTH + (mapWidth - 1);
     float totalMapHeight = mapHeight * BRICK_HEIGHT + (mapHeight - 1);
-    float startX = (_window.getSize().x - totalMapWidth) / 2.0f;
-    float startY = (_window.getSize().y - totalMapHeight) / 10.0f;
+    float startX = (_windowWidth - totalMapWidth) / 2.0f;
+    float startY = (_windowHeight - totalMapHeight) / 10.0f;
 
     for (int row = 0; row < mapHeight; row++) {
         std::string line;
@@ -56,9 +57,9 @@ void GameMap::LoadMap(const std::string& filename) {
 
 }
 
-void GameMap::Draw() {
+void GameMap::Draw(GameWindow &window) {
     for (const std::shared_ptr brick : _bricks) {
-        _window.draw(brick->CreateSprite());
+        window.Draw(brick->CreateSprite());
     }
 }
 

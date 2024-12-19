@@ -1,7 +1,10 @@
 
 #include "Paddle.h"
 
-Paddle::Paddle(sf::RenderWindow& window) : _window(window), _windowWidth(window.getSize().x) {
+Paddle::Paddle(int windowWidth, int windowHeight) 
+    : _windowWidth(windowWidth)
+    , _windowHeight(windowHeight)
+{
 }
 
 void Paddle::LoadImage(const std::string& filename) {
@@ -10,8 +13,11 @@ void Paddle::LoadImage(const std::string& filename) {
         throw std::runtime_error("Failed to load texture: " + filename);
     }
 
-    _position.x = (_window.getSize().x - GetTextureScaleSizeX()) / 2.0f;
-    _position.y = _window.getSize().y - 100.0f;
+    _position.x = (_windowWidth - GetTextureScaleSizeX()) / 2.0f;
+    _position.y = _windowHeight - 100.0f;
+
+    //_window.getSize().x
+    // _window.getSize().y
 }
 
 sf::Sprite Paddle::CreateSprite() {
@@ -21,16 +27,16 @@ sf::Sprite Paddle::CreateSprite() {
     return sprite;
 }
 
-void Paddle::Update() {
-    HandleMouseInput();
+void Paddle::Update(GameWindow &window) {
+    HandleMouseInput(window);
 }
 
-void Paddle::Draw() {
-    _window.draw(CreateSprite());
+void Paddle::Draw(GameWindow &window) {
+    window.Draw(CreateSprite());
 }
 
-void Paddle::HandleMouseInput() {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
+void Paddle::HandleMouseInput(GameWindow &window) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window.GetGameWindow());
 
     if (mousePos.x >= 0 && mousePos.x <= _windowWidth) {
         float paddleHalfWidth = (CreateSprite().getGlobalBounds().size.x / 2.0f);
