@@ -47,9 +47,14 @@ public:
         }
     }
 
-    std::string GetName()
+    std::string GetName() override
     {
         return _name;
+    }
+
+    bool IsRunning() override
+    {
+        return _isRunning;
     }
 
 private:

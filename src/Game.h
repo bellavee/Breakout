@@ -30,6 +30,8 @@ private:
     sf::Font _font;
     sf::Text _scoreText;
     sf::Text _levelText;
+    sf::Text _bonusText;
+    sf::Text _malusText;
     std::unique_ptr<Paddle> _paddle;
     std::unique_ptr<Ball> _ball;
     std::unique_ptr<GameWindow> _gameWindow;
