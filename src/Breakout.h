@@ -14,6 +14,8 @@
 #include "SFML/System/Vector2.hpp"
 #include <cmath>
 #include "../include/Constants.h"
-
+#include "SFML/Audio/Sound.hpp"
+#include "SFML/Audio/SoundBuffer.hpp"
+#include "SFML/Audio/Music.hpp"
 
 #endif

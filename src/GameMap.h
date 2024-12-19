@@ -12,7 +12,9 @@ public:
 
     void LoadMap(const std::string& filename);
     void Draw(GameWindow &window);
-    void RemoveBrick(std::shared_ptr<Brick> brick);
+
+    void OnDestroy();
+
     bool IsComplete() const { return _bricks.empty(); }
     std::vector<std::shared_ptr<Brick>>& GetBricks() { return _bricks; }
 

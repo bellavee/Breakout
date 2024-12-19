@@ -14,6 +14,14 @@ void Game::Init()
 {
     _currentLevel = 0;
     _currentScore = 0;
+
+    if (!_bgm.openFromFile("../assets/bgm.mp3")) {
+        std::cerr << "Failed to load background music!" << std::endl;
+        return;
+    }
+    _bgm.setLooping(true);
+    _bgm.setVolume(20.0f);
+    _bgm.play();
 }
 
 void Game::Run()
@@ -69,3 +77,4 @@ void Game::Update()
             break;
         }
 }
+

@@ -31,7 +31,10 @@
             src/Brick.h
             include/Constants.h)
 
-    target_link_libraries(Breakout PRIVATE sfml-graphics)
+    target_link_libraries(Breakout PRIVATE
+            sfml-graphics
+            sfml-audio
+    )
     target_compile_features(Breakout PRIVATE cxx_std_17)
 
     if(WIN32)

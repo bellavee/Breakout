@@ -25,6 +25,8 @@ private:
     std::unique_ptr<Ball> _ball;
     std::unique_ptr<GameWindow> _gameWindow;
     std::vector<std::unique_ptr<GameLevel>> _allLevel;
+
+    sf::Music _bgm;
 };
 
 
