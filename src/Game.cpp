@@ -5,7 +5,7 @@ Game::Game(int width, int height, const std::string& title)
     : _gameWindow(std::make_unique<GameWindow>(width, height, title))
       , _bgTexture()
       , _bgSprite(_bgTexture)
-      , _paddle(std::make_unique<Paddle>(width, height))
+      , _paddle(std::make_unique<Paddle>("../assets/paddle.png", width, height))
       , _ball(std::make_unique<Ball>("../assets/ball.png", width, height, 2.0f, sf::Vector2f{(float) width / 2, (float) height / 2}, sf::Vector2f{2.0f, -2.0f}))
 {
     if (!_bgTexture.loadFromFile("../assets/bg.png")) {
@@ -17,7 +17,6 @@ Game::Game(int width, int height, const std::string& title)
     _bgSprite.setTexture(_bgTexture);
 
     _allLevel.push_back(std::make_unique<GameLevel>("../levels/1.txt", width, height));
-    _paddle->LoadImage("../assets/paddle.png");
 }
 
 void Game::Init()
