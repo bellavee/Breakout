@@ -17,6 +17,8 @@ public:
     void Update(GameWindow &windox, int &currentScore);
     void Draw(GameWindow& window);
     LevelStatus GetLevelStatus();
+    std::unique_ptr<GameMap>& GetMap() { return _map; }
+
 private:
     std::unique_ptr<GameMap> _map;
 };

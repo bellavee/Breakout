@@ -33,10 +33,42 @@ void Brick::Update() {
 void Brick::CheckCollision() {
 }
 
-void Brick::OnCollision(sf::Vector2f dir) {
+void Brick::OnCollision() {
+    if (_isDestroy) return;
+
+    _hitPoints--;
+
+    if (_hitPoints <= 0) {
+        _isDestroy = true;
+        SetState(Destroy);
+        return;
+    }
+
+    if (_hitPoints == 3) SetState(Level3);
+    else if (_hitPoints == 2) SetState(Level2);
+    else if (_hitPoints == 1) SetState(Level1);
 }
 
 void Brick::OnStateChange() {
+    std::string filename;
+    switch (_state) {
+        case Level4:
+            filename = "../assets/crack-1.png";
+        break;
+        case Level3:
+            filename = "../assets/crack-2.png";
+        break;
+        case Level2:
+            filename = "../assets/crack-3.png";
+        break;
+        case Level1:
+            filename = "../assets/crack-4.png";
+        break;
+        case Destroy:
+            _isDestroy = true;
+        return;
+    }
+    LoadImage(filename);
 }
 
 void Brick::SetState(BrickState state) {

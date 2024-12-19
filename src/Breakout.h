@@ -13,6 +13,7 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Vector2.hpp"
 #include <cmath>
+#include "../include/Constants.h"
 
 
 #endif

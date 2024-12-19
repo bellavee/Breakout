@@ -57,12 +57,24 @@ void GameMap::LoadMap(const std::string& filename) {
 
 }
 
-void GameMap::Draw(GameWindow &window) {
-    for (const std::shared_ptr brick : _bricks) {
+void GameMap::Draw(GameWindow& window) {
+    _bricks.erase(
+        std::remove_if(_bricks.begin(), _bricks.end(),
+            [](const std::shared_ptr<Brick>& brick) {
+                return brick->IsDestroyed();
+            }
+        ),
+        _bricks.end()
+    );
+
+    for (const std::shared_ptr<Brick>& brick : _bricks) {
         window.Draw(brick->CreateSprite());
     }
 }
 
 void GameMap::RemoveBrick(std::shared_ptr<Brick> brick) {
-
+    auto it = std::find(_bricks.begin(), _bricks.end(), brick);
+    if (it != _bricks.end()) {
+        _bricks.erase(it);
+    }
 }

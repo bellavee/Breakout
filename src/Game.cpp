@@ -25,9 +25,12 @@ void Game::Run()
         }
         Update();
         _allLevel[_currentLevel]->Update(*_gameWindow, _currentScore);
+
         _paddle->Update(*_gameWindow);
         _ball->Update();
-        
+
+        _ball->CheckCollisions(*_paddle, _allLevel[_currentLevel]->GetMap()->GetBricks());
+
         _gameWindow->Clear(sf::Color::White);
         _allLevel[_currentLevel]->Draw(*_gameWindow);
         _paddle->Draw(*_gameWindow);

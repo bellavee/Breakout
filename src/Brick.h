@@ -1,10 +1,7 @@
 
 #ifndef BRICK_H
 #define BRICK_H
-#include "../include/Constants.h"
-#include "SFML/Graphics/Texture.hpp"
-#include "SFML/Graphics/Sprite.hpp"
-#include "SFML/System/Vector2.hpp"
+#include "Breakout.h"
 
 enum BrickState {
     Destroy,
@@ -27,10 +24,10 @@ public:
     void Draw();
     void Update();
     void CheckCollision();
-    void OnCollision(sf::Vector2f dir);
+    void OnCollision();
     void OnStateChange();
     void SetState(BrickState state);
-
+    bool IsDestroyed() const { return _isDestroy; }
 
 private:
     sf::Vector2f _position;
