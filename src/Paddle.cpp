@@ -17,7 +17,7 @@ void Paddle::LoadImage(const std::string& filename) {
 sf::Sprite Paddle::CreateSprite() {
     sf::Sprite sprite(_texture);
     sprite.setPosition(_position);
-    sprite.setScale(sf::Vector2f(3, 3));
+    sprite.setScale(sf::Vector2f(GameConstants::SCALE_SIZE, GameConstants::SCALE_SIZE));
     return sprite;
 }
 

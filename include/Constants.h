@@ -6,7 +6,7 @@
 #define CONSTANTS_H
 
 namespace GameConstants {
-    static constexpr float SCALE_SIZE = 3.0f;
+    static constexpr float SCALE_SIZE = 2.0f;
 }
 
 #endif //CONSTANTS_H
