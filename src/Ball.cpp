@@ -8,10 +8,13 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
     , _windowHeight(windowHeight)
     , _speed(speed)
     , _position(startPosition)
+    , _initialPosition(startPosition)
     , _velocity(velocity)
+    , _initialVelocity(velocity)
     , _texture()
     , _sprite(_texture)
     , _ballOutline()
+    , _isMoving(false)
 {
     
     if (!_texture.loadFromFile(filePath)) {
@@ -28,17 +31,34 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
 
     _ballOutline.setRadius(_radius);
     _ballOutline.setFillColor(sf::Color::Transparent);
-    _ballOutline.setOutlineThickness(2.0f);
-    _ballOutline.setOutlineColor(sf::Color::Red);
-    //_ballOutline.setOrigin({_radius, _radius});
-    _ballOutline.setPosition({ bounds.position.x + bounds.size.x / 2.0f, bounds.position.y + bounds.size.y / 2.0f });
+    // _ballOutline.setOutlineThickness(2.0f);
+    // _ballOutline.setOutlineColor(sf::Color::Red);
+    // _ballOutline.setOrigin({_radius, _radius});
+    _ballOutline.setPosition(
+        { bounds.position.x + bounds.size.x / 2.0f,
+        bounds.position.y + bounds.size.y / 2.0f }
+    );
 }
 
-void Ball::Update()
+void Ball::Update(Paddle& paddle)
 {
-    _sprite.move(_velocity * _speed);
-    CheckWallCollisions();
-    _ballOutline.setPosition(_sprite.getPosition());
+    if (!_isMoving) {
+        sf::FloatRect paddleBounds = paddle.GetSprite().getGlobalBounds();
+        float paddleCenterX = paddleBounds.position.x + (paddleBounds.size.x / 2.0f);
+        _position.x = paddleCenterX - _texture.getSize().x;
+        _position.y = paddleBounds.position.y - _texture.getSize().y * 2;
+
+        _sprite.setPosition(_position);
+        _ballOutline.setPosition({ _position.x, _position.y });
+
+        if (isButtonPressed(sf::Mouse::Button::Left)) {
+            _isMoving = true;
+            _velocity = _initialVelocity;
+        }
+    } else {
+        _sprite.move(_velocity * _speed);
+        _ballOutline.setPosition(_sprite.getPosition());
+    }
 }
 
 void Ball::Draw(GameWindow &window)
@@ -47,7 +67,7 @@ void Ball::Draw(GameWindow &window)
     window.Draw(_ballOutline);
 }
 
-void Ball::CheckWallCollisions()
+void Ball::CheckWallCollisions(Paddle& paddle)
 {
     sf::FloatRect ballRect = _sprite.getGlobalBounds();
     sf::Vector2f pos = _sprite.getPosition();
@@ -64,8 +84,14 @@ void Ball::CheckWallCollisions()
         pos.y = 0;
         _velocity.y = -_velocity.y;
     } else if (pos.y + ballRect.size.y > _windowHeight) {
-        pos.y = _windowHeight - ballRect.size.y;
-        _velocity.y = -_velocity.y;
+        _isMoving = false;
+        _position = _initialPosition;
+        _velocity = _initialVelocity;
+        _sprite.setPosition(_position);
+
+        float paddleCenterX = (_windowWidth - paddle.GetSprite().getGlobalBounds().size.x) / 2.0f;
+        paddle.GetSprite().setPosition({paddleCenterX, paddle.GetSprite().getPosition().y});
+
     }
     _sprite.setPosition(pos);
 }
@@ -79,6 +105,7 @@ void Ball::ChangeDirection()
 void Ball::CheckCollisions(Paddle& paddle, std::vector<std::shared_ptr<Brick>>& bricks) {
     CheckPaddleCollision(paddle);
     CheckBrickCollision(bricks);
+    CheckWallCollisions(paddle);
 }
 
 void Ball::CheckPaddleCollision(Paddle& paddle) {
