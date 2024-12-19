@@ -3,7 +3,10 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 
-Brick::Brick(sf::Vector2f pos) : _position(pos), _hasCrack(false), _isDestroy(false) {
+Brick::Brick(sf::Vector2f pos)
+    : _position(pos)
+    , _hitSound(_hitSoundBuffer)
+{
 }
 
 Brick::~Brick() {
@@ -53,42 +56,48 @@ void Brick::OnCollision() {
     if (_hitPoints <= 0) {
         _isDestroy = true;
         SetState(Destroy);
-        return;
+    } else {
+        std::string crackFilename;
+        if (_hitPoints == 3) {
+            crackFilename = "../assets/crack-1.png";
+            SetState(Level3);
+        }
+        else if (_hitPoints == 2) {
+            crackFilename = "../assets/crack-2.png";
+            SetState(Level2);
+        }
+        else if (_hitPoints == 1) {
+            crackFilename = "../assets/crack-3.png";
+            SetState(Level1);
+        }
+
+        if (!crackFilename.empty()) {
+            LoadCrackOverlay(crackFilename);
+        }
     }
 
-    std::string crackFilename;
-    if (_hitPoints == 3) {
-        crackFilename = "../assets/crack-1.png";
-        SetState(Level3);
-    }
-    else if (_hitPoints == 2) {
-        crackFilename = "../assets/crack-2.png";
-        SetState(Level2);
-    }
-    else if (_hitPoints == 1) {
-        crackFilename = "../assets/crack-3.png";
-        SetState(Level1);
-    }
-
-    if (!crackFilename.empty()) {
-        LoadCrackOverlay(crackFilename);
-    }
-}
-
-void Brick::OnStateChange() {
-    if (_state == Destroy) {
-        _isDestroy = true;
-    }
+    PlayHitSound();
 }
 
 void Brick::SetState(BrickState state) {
     _state = state;
     _hitPoints = static_cast<int>(state);
-    OnStateChange();
+
+    if (_state == Destroy) {
+        _isDestroy = true;
+    }
 }
 
-void Brick::Update() {
+void Brick::LoadHitSound(const std::string& filename) {
+    if (!_hitSoundBuffer.loadFromFile(filename)) {
+        throw std::runtime_error("Failed to load sound: " + filename);
+    }
+    _hitSound.setBuffer(_hitSoundBuffer);
+    _soundLoaded = true;
 }
 
-void Brick::CheckCollision() {
+void Brick::PlayHitSound() {
+    if (_soundLoaded) {
+        _hitSound.play();
+    }
 }

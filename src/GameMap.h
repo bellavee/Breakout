@@ -15,6 +15,8 @@ public:
     void Draw(GameWindow &window);
     void RemoveBrick(std::shared_ptr<Brick> brick);
     bool IsEmpty() const { return _bricks.empty(); }
+
+    void OnDestroy();
     std::vector<std::shared_ptr<Brick>>& GetBricks() { return _bricks; }
 
 private:

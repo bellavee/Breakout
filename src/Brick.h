@@ -23,14 +23,15 @@ public:
     int GetTextureScaleSizeX() const { return _texture.getSize().x * GameConstants::SCALE_SIZE; }
     int GetTextureScaleSizeY() const { return _texture.getSize().y * GameConstants::SCALE_SIZE; }
 
-    void Update();
-    void CheckCollision();
     void OnCollision();
-    void OnStateChange();
     void SetState(BrickState state);
+
+    void LoadHitSound(const std::string &filename);
+    void PlayHitSound();
     bool IsDestroyed() const { return _isDestroy; }
 
 private:
+
     sf::Vector2f _position;
     int _hitPoints;
     BrickState _state;
@@ -39,6 +40,10 @@ private:
     sf::Texture _texture;
     sf::Texture _crackTexture;
     bool _hasCrack = false;
+
+    sf::SoundBuffer _hitSoundBuffer;
+    sf::Sound _hitSound;
+    bool _soundLoaded = false;
 
 };
 

@@ -48,6 +48,7 @@ void GameMap::LoadMap(const std::string& filename) {
                     std::shared_ptr brick = std::make_unique<Brick>(sf::Vector2f(x, y));
                     brick->SetState(static_cast<BrickState>(brickType));
                     brick->LoadImage("../assets/brick-" + std::to_string(brickType) + ".png");
+                    brick->LoadHitSound("../assets/hit.wav");
 
                     _bricks.push_back(brick);
                 }
@@ -73,13 +74,6 @@ void GameMap::Update(int &currentScore)
 
 void GameMap::Draw(GameWindow& window) 
 {
-    for (const std::shared_ptr<Brick>& brick : _bricks)
+    for (const std::shared_ptr<Brick>& brick : _bricks) {
         brick->Draw(window);
-}
-
-void GameMap::RemoveBrick(std::shared_ptr<Brick> brick) {
-    auto it = std::find(_bricks.begin(), _bricks.end(), brick);
-    if (it != _bricks.end()) {
-        _bricks.erase(it);
-    }
 }

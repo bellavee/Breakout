@@ -83,7 +83,7 @@ void Ball::CheckCollisions(Paddle& paddle, std::vector<std::shared_ptr<Brick>>& 
 
 void Ball::CheckPaddleCollision(Paddle& paddle) {
     sf::FloatRect ballBounds = GetBounds();
-    sf::FloatRect paddleBounds = paddle.CreateSprite().getGlobalBounds();
+    sf::FloatRect paddleBounds = paddle.GetSprite().getGlobalBounds();
 
     if (ballBounds.findIntersection(paddleBounds)) {
         float hitPosition = (ballBounds.position.x + ballBounds.size.x/2 - paddleBounds.position.x) / paddleBounds.size.x;

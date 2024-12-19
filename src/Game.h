@@ -11,6 +11,9 @@ class Game {
 public:
     Game(int width, int height, const std::string &title);
     void Init();
+
+    void InitBackground(int width, int height);
+
     void Run();
 private:
     void LaunchNextLevel();
@@ -27,6 +30,10 @@ private:
     std::unique_ptr<Ball> _ball;
     std::unique_ptr<GameWindow> _gameWindow;
     std::vector<std::unique_ptr<GameLevel>> _allLevel;
+
+    sf::Music _bgm;
+    sf::Texture _bgTexture;
+    sf::Sprite _bgSprite;
 };
 
 
