@@ -19,8 +19,8 @@
             src/GameWindow.cpp
             src/GameWindow.h
 	    src/Breakout.h
-            src/Level.cpp
-            src/Level.h
+            src/GameLevel.cpp
+            src/GameLevel.h
             src/GameMap.cpp
             src/GameMap.h
             src/Paddle.cpp
