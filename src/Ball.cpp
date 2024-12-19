@@ -21,7 +21,6 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
 
 void Ball::Update()
 {
-    _position = _sprite.getPosition();
     _sprite.move(_velocity * _speed);
     CheckWallCollisions();
 }
@@ -36,7 +35,7 @@ void Ball::CheckWallCollisions()
     sf::FloatRect ballRect = _sprite.getGlobalBounds();
     sf::Vector2f pos = _sprite.getPosition();
 
-    if (pos.x - ballRect.size.x < 0) {
+    if (pos.x < 0) {
         pos.x = 0;
         _velocity.x = -_velocity.x;
     } else if (pos.x + ballRect.size.x >  _windowWidth) {
@@ -44,7 +43,7 @@ void Ball::CheckWallCollisions()
         _velocity.x = -_velocity.x;
     }
     
-    if (pos.y  < 0) {
+    if (pos.y < 0) {
         pos.y = 0;
         _velocity.y = -_velocity.y;
     } else if (pos.y + ballRect.size.y > _windowHeight) {
