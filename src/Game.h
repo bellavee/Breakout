@@ -4,6 +4,7 @@
 
 #include "GameLevel.h"
 #include "Paddle.h"
+#include "Ball.h"
 #include "GameWindow.h"
 
 class Game {
@@ -20,9 +21,10 @@ private:
 private:
     int _currentLevel;
     int _currentScore;
+    std::unique_ptr<Paddle> _paddle;
+    std::unique_ptr<Ball> _ball;
     std::unique_ptr<GameWindow> _gameWindow;
     std::vector<std::unique_ptr<GameLevel>> _allLevel;
-    std::unique_ptr<Paddle> _paddle;
 };
 
 
