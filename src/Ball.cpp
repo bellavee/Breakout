@@ -1,6 +1,8 @@
 
 #include "Ball.h"
 
+#include "../include/Constants.h"
+
 Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float speed, const sf::Vector2f &startPosition, const sf::Vector2f &velocity) 
     : _windowWidth(windowWidth)
     , _windowHeight(windowHeight)
@@ -11,12 +13,14 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
     , _sprite(_texture)
 {
     
-    _texture.loadFromFile(filePath);
+    if (!_texture.loadFromFile(filePath)) {
+        throw std::runtime_error("Failed to load texture: " + filePath);
+    }
     sf::Sprite tmp(_texture);
     _sprite = tmp;
     _sprite.setTexture(_texture);
     _sprite.setPosition(_position);
-    _sprite.setScale({0.5f, 0.5f});
+    _sprite.setScale({GameConstants::SCALE_SIZE, GameConstants::SCALE_SIZE});
 }
 
 void Ball::Update()
@@ -56,5 +60,5 @@ void Ball::CheckWallCollisions()
 void Ball::ChangeDirection()
 {
     float angle = (float)(rand() % 360);
-    _velocity = { _speed * cos(angle), _speed * sin(angle) };
+    _velocity = { _speed * std::cos(angle), _speed * std::sin(angle) };
 }

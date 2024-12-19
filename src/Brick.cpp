@@ -12,8 +12,7 @@ Brick::~Brick() {
 }
 
 void Brick::LoadImage(const std::string& filename) {
-    bool success = _texture.loadFromFile(filename);
-    if (!success) {
+    if (!_texture.loadFromFile(filename)) {
         throw std::runtime_error("Failed to load texture: " + filename);
     }
 }
