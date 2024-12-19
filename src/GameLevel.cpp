@@ -9,6 +9,7 @@ GameLevel::GameLevel(std::string mapFilePath, int windowWidth, int windowHeight)
 
 void GameLevel::Update(GameWindow &windox, int &currentScore)
 {
+    _map->Update(currentScore);
 }
 
 void GameLevel::Draw(GameWindow &window)
@@ -18,5 +19,7 @@ void GameLevel::Draw(GameWindow &window)
 
 LevelStatus GameLevel::GetLevelStatus()
 {
+    if (_map->IsEmpty())
+        return LevelStatus::Ended;
     return LevelStatus::Running;
 }

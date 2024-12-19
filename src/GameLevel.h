@@ -7,8 +7,7 @@
 
 enum class LevelStatus {
     Running,
-    Win,
-    Lose,
+    Ended,
 };
 
 class GameLevel {

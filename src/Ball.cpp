@@ -11,6 +11,7 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
     , _velocity(velocity)
     , _texture()
     , _sprite(_texture)
+    , _ballOutline()
 {
     
     if (!_texture.loadFromFile(filePath)) {
@@ -21,17 +22,29 @@ Ball::Ball(const std::string &filePath, int windowWidth, int windowHeight, float
     _sprite.setTexture(_texture);
     _sprite.setPosition(_position);
     _sprite.setScale({GameConstants::SCALE_SIZE, GameConstants::SCALE_SIZE});
+
+    sf::FloatRect bounds = _sprite.getGlobalBounds();
+    _radius = std::max(bounds.size.x, bounds.size.y) / 2.0f;
+
+    _ballOutline.setRadius(_radius);
+    _ballOutline.setFillColor(sf::Color::Transparent);
+    _ballOutline.setOutlineThickness(2.0f);
+    _ballOutline.setOutlineColor(sf::Color::Red);
+    //_ballOutline.setOrigin({_radius, _radius});
+    _ballOutline.setPosition({ bounds.position.x + bounds.size.x / 2.0f, bounds.position.y + bounds.size.y / 2.0f });
 }
 
 void Ball::Update()
 {
     _sprite.move(_velocity * _speed);
     CheckWallCollisions();
+    _ballOutline.setPosition(_sprite.getPosition());
 }
 
 void Ball::Draw(GameWindow &window)
 {
     window.Draw(_sprite);
+    window.Draw(_ballOutline);
 }
 
 void Ball::CheckWallCollisions()

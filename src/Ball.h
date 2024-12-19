@@ -15,7 +15,9 @@ public:
     void CheckCollisions(Paddle& paddle, std::vector<std::shared_ptr<Brick>>& bricks);
     void ChangeDirection();
 
-    sf::FloatRect GetBounds() const { return _sprite.getGlobalBounds(); }
+    sf::FloatRect GetBounds() const { return _ballOutline.getGlobalBounds(); }
+    float GetRadius() { return _radius; };
+    void SetRadius(float radius) { _radius = radius; }
 
 private:
     void CheckWallCollisions();
@@ -25,8 +27,10 @@ private:
     sf::Vector2f _velocity;
     sf::Vector2f _position;
     float _speed;
+    float _radius;
     sf::Texture _texture;
     sf::Sprite _sprite;
+    sf::CircleShape _ballOutline;
     int _windowWidth;
     int _windowHeight;
 };
