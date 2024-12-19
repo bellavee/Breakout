@@ -105,6 +105,7 @@ void Ball::CheckWallCollisions(Paddle& paddle)
 
     }
     _sprite.setPosition(pos);
+    IncreaseRadius(0);
 }
 
 void Ball::ChangeDirection()
