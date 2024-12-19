@@ -16,12 +16,10 @@ public:
     bool IsComplete() const { return _bricks.empty(); }
     std::vector<std::shared_ptr<Brick>>& GetBricks() { return _bricks; }
 
-
 private:
     std::vector<std::shared_ptr<Brick>> _bricks;
     int _windowWidth;
     int _windowHeight;
-    void Clear();
 
 };
 

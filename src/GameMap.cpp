@@ -68,7 +68,7 @@ void GameMap::Draw(GameWindow& window) {
     );
 
     for (const std::shared_ptr<Brick>& brick : _bricks) {
-        window.Draw(brick->CreateSprite());
+        brick->Draw(window);
     }
 }
 

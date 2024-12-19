@@ -1,7 +1,7 @@
-
 #ifndef BRICK_H
 #define BRICK_H
 #include "Breakout.h"
+#include "GameWindow.h"
 
 enum BrickState {
     Destroy,
@@ -17,11 +17,12 @@ public:
     ~Brick();
 
     void LoadImage(const std::string& filename);
+    void LoadCrackOverlay(const std::string& filename);
     sf::Sprite CreateSprite();
+    void Draw(GameWindow& window);
     int GetTextureScaleSizeX() const { return _texture.getSize().x * GameConstants::SCALE_SIZE; }
     int GetTextureScaleSizeY() const { return _texture.getSize().y * GameConstants::SCALE_SIZE; }
 
-    void Draw();
     void Update();
     void CheckCollision();
     void OnCollision();
@@ -36,8 +37,9 @@ private:
     bool _isDestroy = false;
 
     sf::Texture _texture;
+    sf::Texture _crackTexture;
+    bool _hasCrack = false;
+
 };
-
-
 
 #endif //BRICK_H
