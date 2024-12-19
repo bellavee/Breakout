@@ -7,6 +7,8 @@ Game::Game(int width, int height, const std::string& title)
     , _bonusClock()
     , _malusClock()
     , _levelText(_font)
+    , _malusText(_font)
+    , _bonusText(_font)
     , _gameWindow(std::make_unique<GameWindow>(width, height, title))
     , _bgTexture()
     , _bgSprite(_bgTexture)
@@ -30,6 +32,16 @@ Game::Game(int width, int height, const std::string& title)
     _scoreText.setFont(_font);
     _scoreText.setPosition({width - 200.0f, 10.0f});
     _scoreText.setFillColor(sf::Color::Black);
+
+    _bonusText.setFont(_font);
+    _bonusText.setPosition({200.0f, 15.0f});
+    _bonusText.setFillColor(sf::Color::Black);
+    _bonusText.setCharacterSize(20);
+
+    _malusText.setFont(_font);
+    _malusText.setPosition({650.0f, 15.0f});
+    _malusText.setFillColor(sf::Color::Black);
+    _malusText.setCharacterSize(20);
 
     _levelText.setFont(_font);
     _levelText.setPosition({10.0f, 10.0f});
@@ -65,21 +77,19 @@ void Game::Run()
         }
         Update();
         _allLevel[_currentLevel]->Update(*_gameWindow, _currentScore);
-
         _paddle->Update(*_gameWindow);
         _ball->Update(*_paddle);
-        _scoreText.setString("Score: " + std::to_string(_currentScore));
-        _levelText.setString("Level: " + std::to_string(_currentLevel + 1));
         _ball->CheckCollisions(*_paddle, _allLevel[_currentLevel]->GetMap()->GetBricks());
 
         _gameWindow->Clear(sf::Color::White);
         _gameWindow->Draw(_bgSprite);
-
         _allLevel[_currentLevel]->Draw(*_gameWindow);
         _paddle->Draw(*_gameWindow);
         _ball->Draw(*_gameWindow);
         _gameWindow->Draw(_scoreText);
         _gameWindow->Draw(_levelText);
+        _gameWindow->Draw(_malusText);
+        _gameWindow->Draw(_bonusText);
 
         _gameWindow->Display();
     }
@@ -105,6 +115,7 @@ void Game::Lose()
 
 void Game::Update()
 {
+    std::string bonusStr("None"), malusStr("None");
     if (_allLevel[_currentLevel]->GetLevelStatus() == LevelStatus::Ended)
         LaunchNextLevel();
 
@@ -122,10 +133,21 @@ void Game::Update()
         _maluses[i]->Apply();
     }
 
-    for (const auto & bonus : _bonuses)
+    for (const auto & bonus : _bonuses) {
         bonus->Update();
-    for (const auto & malus : _maluses)
+        if (bonus->IsRunning())
+            bonusStr =  bonus->GetName();
+    }
+    for (const auto & malus : _maluses) {
         malus->Update();
+        if (malus->IsRunning())
+            malusStr =  malus->GetName();
+    }
+
+    _scoreText.setString("Score: " + std::to_string(_currentScore));
+    _levelText.setString("Level: " + std::to_string(_currentLevel + 1));
+    _bonusText.setString("Current Bonus: " + bonusStr);
+    _malusText.setString("Current Malus: " + malusStr);
 }
 
 void Game::InitBonuses()
