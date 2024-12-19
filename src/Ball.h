@@ -18,6 +18,7 @@ public:
     sf::FloatRect GetBounds() const { return _ballOutline.getGlobalBounds(); }
     float GetRadius() { return _radius; };
     void IncreaseRadius(float radius);
+    void IncreaseSpeed(float speed) { _speed += speed; }
 private:
     void CheckWallCollisions();
     void CheckPaddleCollision(Paddle& paddle);

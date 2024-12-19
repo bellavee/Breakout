@@ -4,7 +4,8 @@
 Game::Game(int width, int height, const std::string& title) 
     : _font()
     , _scoreText(_font)
-    , _gameClock()
+    , _bonusClock()
+    , _malusClock()
     , _gameWindow(std::make_unique<GameWindow>(width, height, title))
     , _bgTexture()
     , _bgSprite(_bgTexture)
@@ -97,12 +98,18 @@ void Game::Update()
     if (_allLevel[_currentLevel]->GetLevelStatus() == LevelStatus::Ended)
         LaunchNextLevel();
 
-    // launch new bonus
-    if (_gameClock.getElapsedTime().asSeconds() >= 30.0f) {
-        _gameClock.restart();
+    if (_bonusClock.getElapsedTime().asSeconds() >= 30.0f) {
+        _bonusClock.restart();
         int max = _bonuses.size();
         int i =  rand() % max;
         _bonuses[i]->Apply();
+    }
+
+    if (_malusClock.getElapsedTime().asSeconds() >= 45.0f) {
+        _malusClock.restart();
+        int max = _maluses.size();
+        int i =  rand() % max;
+        _maluses[i]->Apply();
     }
 
     for (const auto & bonus : _bonuses)
@@ -117,11 +124,21 @@ void Game::InitBonuses()
     auto paddleExpandResetEffect = [](Paddle& p) { p.DecreaseSize(2.5, 1.5); };
     auto ballExpandEffect = [](Ball& b) { b.IncreaseRadius(30.0); };
     auto ballExpandResetEffect = [](Ball& b) { b.IncreaseRadius(-30.0); };
+    auto speedBoostEffect = [](Ball& b) { b.IncreaseSpeed(-1); };
+    auto speedResetEffect = [](Ball& b) { b.IncreaseSpeed(1); };
 
     _bonuses.push_back(std::make_unique<GameEffect<Paddle>>("Expanding Paddle", paddleExpandEffect, paddleExpandResetEffect, *_paddle, 15.0f));
     _bonuses.push_back(std::make_unique<GameEffect<Ball>>("Fireball", ballExpandEffect, ballExpandResetEffect, *_ball, 15.0f));
+    _bonuses.push_back(std::make_unique<GameEffect<Ball>>("Slow Motion", speedBoostEffect, speedResetEffect, *_ball, 15.0f));
 }
 
 void Game::InitMaluses()
 {
+    auto paddleSrinkEffect = [](Paddle& p) { p.DecreaseSize(1.5, 0.5); };
+    auto paddleSrinkResetEffect = [](Paddle& p) { p.IncreaseSize(1.5, 0.5); };
+    auto speedBoostEffect = [](Ball& b) { b.IncreaseSpeed(2); };
+    auto speedResetEffect = [](Ball& b) { b.IncreaseSpeed(-2); };
+
+    _maluses.push_back(std::make_unique<GameEffect<Paddle>>("Shrinking Paddle", paddleSrinkEffect, paddleSrinkResetEffect, *_paddle, 15.0f));
+    _maluses.push_back(std::make_unique<GameEffect<Ball>>("Speed Up", speedBoostEffect, speedResetEffect, *_ball, 15.0f));
 }

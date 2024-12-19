@@ -39,7 +39,8 @@ private:
     sf::Music _bgm;
     sf::Texture _bgTexture;
     sf::Sprite _bgSprite;
-    sf::Clock _gameClock;
+    sf::Clock _bonusClock;
+    sf::Clock _malusClock;
 };
 
 
